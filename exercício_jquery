@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app" class="container">
+    <h1>Lista de Tarefas</h1>
+    <form id="taskForm" class="form">
+        <input type="text" id="taskInput" placeholder="Adicione uma tarefa" class="task-input">
+        <button type="submit" class="add-button">Adicionar</button>
+    </form>
+    <ul id="taskList" class="task-list"></ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.form {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.task-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.add-button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.task-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    cursor: pointer;
+    margin-bottom: 8px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+li.completed {
+    text-decoration: line-through;
+    background-color: #d3ffd3;
+}
+
+.delete {
+    background-color: #ff6464;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+$(document).ready(function() {
+    // Evento de submissão do formulário
+    $("#taskForm").submit(function(event) {
+        event.preventDefault(); // Evita o comportamento padrão de recarregar a página
+
+        // Obtém o valor do campo de entrada
+        var taskName = $("#taskInput").val();
+
+        // Verifica se o campo não está vazio
+        if (taskName.trim() !== "") {
+            // Adiciona um novo item à lista com um botão de exclusão
+            $("#taskList").append("<li>" + taskName + " <button class='delete'>Excluir</button></li>");
+
+            // Limpa o campo de entrada
+            $("#taskInput").val("");
+        }
+    });
+
+    // Evento de clique nos itens da lista
+    $("#taskList").on("click", "li", function() {
+        // Adiciona ou remove a classe "completed" para aplicar ou remover o efeito de linha
+        $(this).toggleClass("completed");
+    });
+
+    // Evento de clique nos botões de exclusão
+    $("#taskList").on("click", ".delete", function(event) {
+        event.stopPropagation(); // Impede que o evento de clique no li seja acionado
+        $(this).parent().remove(); // Remove o li pai do botão clicado
+    });
+});
